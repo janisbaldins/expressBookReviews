@@ -62,19 +62,22 @@ public_users.get('/isbn/:isbn', async function (req, res) {
 
 // Get book details based on author (Promise)
 public_users.get('/author/:author',  function (req, res) {
+  // Get book details based on author (Promise)
+public_users.get('/author/:author', function (req, res) {
   const author = req.params.author;
 
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     const keys = Object.keys(books);
     const result = keys
-      .map((key) => books[key])
-      .filter((book) => book.author === author);
+      .map(key => books[key])
+      .filter(book => book.author === author);
 
-    if (result.length > 0) resolve(result);
-    else reject("No books found for this author");
+    resolve(result); // pat ja tukšs
   })
-    .then((result) => res.status(200).json(result))
-    .catch((err) => res.status(404).json({ message: err }));
+    .then(result => res.status(200).json(result))
+    .catch(() => res.status(500).json({ message: "Error fetching books" }));
+});
+
 });
 
 
